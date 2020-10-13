@@ -1,6 +1,5 @@
 let socket = io();
 
-
 let params = new URLSearchParams(window.location.search);
 
 if (!params.has('name') || !params.has('room')) {
@@ -19,7 +18,8 @@ socket.on('connect', function() {
     console.log('Conectado al servidor');
 
     socket.emit('enterChat', user, function(resp) {
-        console.log('Todos los conectados: ', resp);
+        // console.log('Todos los conectados: ', resp);
+        rederUsers(resp);
     });
 
 });
@@ -34,12 +34,16 @@ socket.on('disconnect', function() {
 
 //Escuchar message
 socket.on('createMessage', function(message) {
-    console.log(message);
+    // console.log(message);
+
+    renderMessage(message, false);
+    scrollBottom();
 })
 
 //Cuando un usuario entra o sale del chat
 socket.on('listPersons', function(users) {
-    console.log('Conectados en la sala: ', users);
+    // console.log('Conectados en la sala: ', users);
+    rederUsers(users);
 })
 
 //Mensajes privados: escuchaar
